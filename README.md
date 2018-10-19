@@ -86,3 +86,26 @@ code: vgg_3L_cat2_tile
 use imagenet pre-trained model as feature extractor, crop center 64x64 area, and extract 512 features per image
 (16:00) use SVC 64%, sklearn.MLPClassifier: train upto 96%/validate is 72%, build my own MLP 5 layer, overfit happens around 72%
 will try tile->clustering->histogram method
+
+## 2018/10/18
+vgg19_all-cat-tile.ipynb to train for 36 classes
+(18:00) pick 10000 for train/test set, and can achieve training accuracy to 88~90%, test acc=84%
+(23:00) analyze the mis-classified sample, and found 58% of failed samples are from 4 corners (position 0, 3, 12, 15)
+![mis-classified tile position analysis](https://github.com/edwardduh/GCP-for-ML/blob/master/fail-tile-pos-histogram.jpg)
+
+## 2018/10/19
+use 12-tiles to train & test, train / test => 87% / 83%
+analyze the failed tiles, and found center-4 are best, surrounding 8 tiles have about 30~50% more fail samples than center-4
+failed samples in category: cat-28 (Tomato Bacterial Spot ) & 32 (Tomato Target Spot Bacteria) shows extremely high fail rate, 70% / 50% failure
+(11:00) since center-4 is more representative, try use center-4 to train & test. Training center-4 model
+(13:30) by confusion matrix, found cat: (9, 7), (28, 29, 31, 32, 33) of category-37 are easy to confuse
+(14:30) with 30 epoch training & 20 epoch conv/fc layers training, train/test => 93%/81% on tile-base acc
+ensamble 4 tiles (majority voting) to one image, improve test 81.8% to 89.5% acc
+(15:30) retry 12-tile model with ensamble
+train/test achieve 88/88%, 
+ensamble using majority vote=> test can be 96.8% (major fail is class (28, 32)
+(18:00) same model to check on validation set: predict acc=83.1%, 12-tile ensamble is 92.6%
+** Will apply the same technique on sickness level
+** may try to apply the same technique on 61-category
+
+## 2018
