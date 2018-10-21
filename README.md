@@ -108,4 +108,14 @@ ensamble using majority vote=> test can be 96.8% (major fail is class (28, 32)
 ** Will apply the same technique on sickness level
 ** may try to apply the same technique on 61-category
 
-## 2018
+## 2018/10/20
+(1). Apply 12-tile scheme on sick-level (0,1,2), use category 0 & 2 as training set, can achieve category-0 & 2 accuracy upto 99%, but it is hard to find a rule to inference category-1 (max. acc is around 72%)
+(2). apply same technique on 61-category, after training 40 epoches, train/test = 90%/66%. apply ensamble goes to 79%
+** try use healthy sample to train healthy/non-healthy, use the ensamble sick-level 
+** use the model as feature extractor, each tile convert to a feature vectors, calculate vector distance to health centroid.
+or use clustering scheme to 
+
+## 2018/10/21
+(23:00) idea: for sick-level, consider to use 2 classifiers:
+CLS02: training using class-0 & class-2 only, can classify 0 & 2 upto 99% accuracy (highly possible)
+CLS12: training using class-1 & 2 only, try to classify 1&2 upto 98% acc (doing)
