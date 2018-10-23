@@ -119,3 +119,12 @@ or use clustering scheme to
 (23:00) idea: for sick-level, consider to use 2 classifiers:
 CLS02: training using class-0 & class-2 only, can classify 0 & 2 upto 99% accuracy (highly possible)
 CLS12: training using class-1 & 2 only, try to classify 1&2 upto 98% acc (doing)
+
+## 2018/10/23
+tried to use vgg19 as feature extractor, 128 dimension. Check Euclidean&Manhattan distance of healthy, light ill, serious ill. The three centroids are very close. Use LDA and PCA to check the clusters are nearly 100% overlap. It seems we cannot divide them in this space.
+(15:00) Try to separate tomato as a separate category, hence there are 43 category. After 60 epochs training, train/test => 99%/75%, using tile-ensamble can achieve 99%/86%, still not good enough
+
+## 2018/10/24
+(01:00) tried to use color-segmentation/histogram, it looks promising. Define 2 color range, one for green leaf, one for illed (yellow)
+generate mask_green and mask_yellow. Count mask_g/mask_y pixels can be a good indicator for serious * lightly illed
+** TBD: try mask_g/mask_y as features for ML to determine serious/lightly illed tomorrow. target 90%, then combine with 23 category classifiers
