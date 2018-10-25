@@ -128,3 +128,7 @@ tried to use vgg19 as feature extractor, 128 dimension. Check Euclidean&Manhatta
 (01:00) tried to use color-segmentation/histogram, it looks promising. Define 2 color range, one for green leaf, one for illed (yellow)
 generate mask_green and mask_yellow. Count mask_g/mask_y pixels can be a good indicator for serious * lightly illed
 ** TBD: try mask_g/mask_y as features for ML to determine serious/lightly illed tomorrow. target 90%, then combine with 23 category classifiers
+(23:00) tried use hsv, hue-histogram (hue 10~150 degree range) (2-bin, 5bins, 10-bins), using SVM (0,1,2) classifier, can achieve 62.5% on 2-bins & 5-bins, 58% for 10-bins. The major problem is still hard to distinguish between lightly-ill & serious-ill
+
+## 2018/10/25
+(10:00) will try to use only yellow area, with emphasis pre-process on V (hsv), using CNN to classify lightly-ill and seriously-ill
