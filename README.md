@@ -132,3 +132,25 @@ generate mask_green and mask_yellow. Count mask_g/mask_y pixels can be a good in
 
 ## 2018/10/25
 (10:00) will try to use only yellow area, with emphasis pre-process on V (hsv), using CNN to classify lightly-ill and seriously-ill
+
+## 2018/11/7
+Final decision on model to use
+1. Use VGG19 for 43 classes (with plant, healthy/sick)
+(1). preprocess: split into 6 tiles (96x96x3) per image, remove background using Grabcut algorithm every tile, normalize RGB 3 channels between 0.0~1.0, maintain RGB ratio (color unchange
+(2). Training: using ImageDataGenerator
+datagen = ImageDataGenerator(horizontal_flip=True, rotation_range=20,  brightness_range=(0.3, 0.7), 
+            width_shift_range=0.125,height_shift_range=0.125,fill_mode='nearest',cval=0.)
+due to large training set (190k tiles) cannot fit into memory, split into 3 subsets, and train sequentially
+(3). Will try 2 types (43 classes+remapping to 61, 61 classes directly)
+(4). average (or majority vote) ensemble 6 tiles into 1 image
+(5). expected target is to achieve 83% tile-acc, and 96% image-acc on 43 classes
+
+2. Use VGG-Lite for 2 classes (slightly sick/seriously sick)
+(1). preprocessing: use scaled down 96x96x3, create edge plane (using h+v hog operator), remove background, color emphasize (Yellow, Brown, White), and dim green area. Use 96x96x4 RGB as training input
+(2). Training: select only category 1 & 2 as training data to train the model => 61 classes
+(3). target to achieve 83% of classification 1 & 2
+
+3. ensemble
+(1). test data input -> preprocessing_model_tile -> predict -> map to 61 classes (pred_model_tile)
+(2). test data input -> preprocessing_model_ill -> predict -> pred_model_ill
+(3). pred_model_ill -> mask out healthy classes -> average with pred_model_tile => final predict 61 classes
